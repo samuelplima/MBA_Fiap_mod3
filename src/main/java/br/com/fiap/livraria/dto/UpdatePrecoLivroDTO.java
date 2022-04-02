@@ -13,11 +13,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class LivroDTO {
+public class UpdatePrecoLivroDTO {
 
-    private String isbn;
-    private String titulo;
-    private String autor;
     private BigDecimal preco;
 
 }

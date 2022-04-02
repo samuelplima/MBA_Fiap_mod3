@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class LivroDTO {
+public class CreateUpdateLivroDTO {
 
     private String isbn;
     private String titulo;
