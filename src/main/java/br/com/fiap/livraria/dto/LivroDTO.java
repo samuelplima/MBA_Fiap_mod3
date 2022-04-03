@@ -1,13 +1,16 @@
 package br.com.fiap.livraria.dto;
 
+import br.com.fiap.livraria.entity.Livro;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@ToString
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -21,4 +24,6 @@ public class LivroDTO {
     private String autor;
     private BigDecimal preco;
 
+    public LivroDTO(Livro livro) {
+    }
 }
