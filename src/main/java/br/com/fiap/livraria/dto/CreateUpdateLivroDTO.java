@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateUpdateLivroDTO {
 
+    private Long id;
     private String isbn;
     private String titulo;
     private String autor;
