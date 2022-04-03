@@ -1,5 +1,6 @@
 package br.com.fiap.livraria.entity;
 
+import br.com.fiap.livraria.dto.CreateUpdateLivroDTO;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,6 +24,9 @@ import java.util.Date;
 @Entity
 @Table(name = "TB_LIVRO")
 public class Livro {
+
+    public Livro(CreateUpdateLivroDTO createUpdateLivroDTO) {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

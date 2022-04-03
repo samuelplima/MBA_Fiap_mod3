@@ -30,32 +30,45 @@ public class LivrariaServiceImpl implements LivrariaService {
         }
         return  LivroList
                 .stream()
-                .map(LivroDTO::new)
+                .map(livro -> new LivroDTO(livro))
                 .collect(Collectors.toList());
     }
 
     @Override
     public LivroDTO buscarLivroPorId(Long id) {
-        return null;
+        Livro livro = livroRepository.getById(id);
+        return new LivroDTO(livro);
     }
 
     @Override
     public LivroDTO criar(CreateUpdateLivroDTO createUpdateLivroDTO) {
-        return null;
+        Livro livro = new Livro(createUpdateLivroDTO);
+        Livro savedLivro = livroRepository.save(livro);
+        return new LivroDTO(savedLivro);
     }
 
     @Override
     public LivroDTO atualizar(Long id, CreateUpdateLivroDTO createUpdateLivroDTO) {
-        return null;
+        Livro livro = livroRepository.getById(id);
+        livro.setTitulo(createUpdateLivroDTO.getTitulo());
+        livro.setAutor(createUpdateLivroDTO.getAutor());
+        livro.setIsbn(createUpdateLivroDTO.getIsbn());
+        livro.setPreco(createUpdateLivroDTO.getPreco());
+        Livro savedLivro = livroRepository.save(livro);
+        return new LivroDTO(savedLivro);
     }
 
     @Override
     public LivroDTO atualizarPreco(Long id, UpdatePrecoLivroDTO updatePrecoLivroDTO) {
-        return null;
+        Livro livro = livroRepository.getById(id);
+        livro.setPreco(updatePrecoLivroDTO.getPreco());
+        Livro savedLivro = livroRepository.save(livro);
+        return new LivroDTO(savedLivro);
     }
 
     @Override
     public void deletarLivro(Long id) {
-
+        Livro livro = livroRepository.getById(id);
+        livroRepository.delete(livro);
     }
 }

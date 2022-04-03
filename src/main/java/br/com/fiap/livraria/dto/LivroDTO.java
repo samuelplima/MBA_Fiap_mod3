@@ -18,12 +18,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class LivroDTO {
 
+    public LivroDTO(Livro livro) {
+    }
+
     private Long id;
     private String isbn;
     private String titulo;
     private String autor;
     private BigDecimal preco;
 
-    public LivroDTO(Livro livro) {
-    }
 }
