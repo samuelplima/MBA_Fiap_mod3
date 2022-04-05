@@ -35,7 +35,7 @@ public class LivrariaServiceImpl implements LivrariaService {
     }
 
     @Override
-    public LivroDTO buscarLivroPorId(Long id) {
+    public LivroDTO buscarLivroPorId(Integer id) {
         Livro livro = livroRepository.getById(id);
         return new LivroDTO(livro);
     }
@@ -43,12 +43,16 @@ public class LivrariaServiceImpl implements LivrariaService {
     @Override
     public LivroDTO criar(CreateUpdateLivroDTO createUpdateLivroDTO) {
         Livro livro = new Livro(createUpdateLivroDTO);
+        livro.setTitulo(createUpdateLivroDTO.getTitulo());
+        livro.setAutor(createUpdateLivroDTO.getAutor());
+        livro.setIsbn(createUpdateLivroDTO.getIsbn());
+        livro.setPreco(createUpdateLivroDTO.getPreco());
         Livro savedLivro = livroRepository.save(livro);
         return new LivroDTO(savedLivro);
     }
 
     @Override
-    public LivroDTO atualizar(Long id, CreateUpdateLivroDTO createUpdateLivroDTO) {
+    public LivroDTO atualizar(Integer id, CreateUpdateLivroDTO createUpdateLivroDTO) {
         Livro livro = livroRepository.getById(id);
         livro.setTitulo(createUpdateLivroDTO.getTitulo());
         livro.setAutor(createUpdateLivroDTO.getAutor());
@@ -59,7 +63,7 @@ public class LivrariaServiceImpl implements LivrariaService {
     }
 
     @Override
-    public LivroDTO atualizarPreco(Long id, UpdatePrecoLivroDTO updatePrecoLivroDTO) {
+    public LivroDTO atualizarPreco(Integer id, UpdatePrecoLivroDTO updatePrecoLivroDTO) {
         Livro livro = livroRepository.getById(id);
         livro.setPreco(updatePrecoLivroDTO.getPreco());
         Livro savedLivro = livroRepository.save(livro);
@@ -67,7 +71,7 @@ public class LivrariaServiceImpl implements LivrariaService {
     }
 
     @Override
-    public void deletarLivro(Long id) {
+    public void deletarLivro(Integer id) {
         Livro livro = livroRepository.getById(id);
         livroRepository.delete(livro);
     }

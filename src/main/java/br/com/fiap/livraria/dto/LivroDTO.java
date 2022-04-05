@@ -21,7 +21,7 @@ public class LivroDTO {
     public LivroDTO(Livro livro) {
     }
 
-    private Long id;
+    private Integer id;
     private String isbn;
     private String titulo;
     private String autor;

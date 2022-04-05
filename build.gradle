@@ -21,6 +21,8 @@ dependencies {
 
 	implementation 'com.h2database:h2:1.4.197'
 
+    implementation 'org.flywaydb:flyway-maven-plugin:4.0.3'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'

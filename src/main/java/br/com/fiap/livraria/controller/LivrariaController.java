@@ -4,8 +4,9 @@ import br.com.fiap.livraria.dto.CreateUpdateLivroDTO;
 import br.com.fiap.livraria.dto.LivroDTO;
 import br.com.fiap.livraria.dto.UpdatePrecoLivroDTO;
 import br.com.fiap.livraria.service.LivrariaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,15 +16,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("livros")
+@RequestMapping("/livros")
+@Slf4j
+@Transactional
 public class LivrariaController {
 
     //injeção de dependencia
@@ -34,47 +36,53 @@ public class LivrariaController {
         this.livrariaService = livrariaService;
     }
 
-    @GetMapping
+
+    @GetMapping(value = "/listar")
+    @ResponseBody
     public List<LivroDTO> getLivros(
-            @RequestParam String titulo
+            @RequestParam(required = false, value = "titulo") String titulo
     ) {
         return livrariaService.listarLivro(titulo);
     }
 
-    @GetMapping("{isbn}")
+    @GetMapping("get/{id}")
+    @ResponseBody
     public LivroDTO getLivroById(
-            @PathVariable(name = "id") Long id
+            @PathVariable Integer id
     ) {
         return livrariaService.buscarLivroPorId(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public LivroDTO createLivro(
             @RequestBody CreateUpdateLivroDTO novoLivroDTO
     ) {
         return livrariaService.criar(novoLivroDTO);
     }
 
-    @PutMapping("{isbn}")
+    @PutMapping("/update/{id}")
+    @ResponseBody
     public LivroDTO updateLivro(
-            @RequestBody CreateUpdateLivroDTO novoLivroDTO,
-            @PathVariable Long id
+            @PathVariable Integer id,
+            @RequestBody CreateUpdateLivroDTO novoLivroDTO
     ) {
         return livrariaService.atualizar(id, novoLivroDTO);
     }
 
-    @PatchMapping("{isbn}")
+    @PatchMapping("/preco/{id}")
+    @ResponseBody
     public LivroDTO updatePreco(
-            @RequestBody UpdatePrecoLivroDTO updatePrecoLivroDTO,
-            @PathVariable Long id
+            @PathVariable Integer id,
+            @RequestBody UpdatePrecoLivroDTO updatePrecoLivroDTO
     ) {
         return livrariaService.atualizarPreco(id, updatePrecoLivroDTO);
     }
 
-    @DeleteMapping("{isbn}")
+    @DeleteMapping("/delete/{id}")
     public void deleteLivro(
-            @PathVariable Long id
+            @PathVariable Integer id
     ) {
         livrariaService.deletarLivro(id);
     }
