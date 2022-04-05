@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface LivrariaService {
 
+    List<LivroDTO> listarTodos();
+
     List<LivroDTO> listarLivro(String titulo);
 
     LivroDTO buscarLivroPorId(Integer id);

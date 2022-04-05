@@ -36,10 +36,15 @@ public class LivrariaController {
         this.livrariaService = livrariaService;
     }
 
-
-    @GetMapping(value = "/listar")
+    @GetMapping(value = "/listarTodos")
     @ResponseBody
-    public List<LivroDTO> getLivros(
+    public List<LivroDTO> findAll() {
+        return livrariaService.listarTodos();
+    }
+
+    @GetMapping(value = "/listarPorTitulo")
+    @ResponseBody
+    public List<LivroDTO> findByTitulo(
             @RequestParam(required = false, value = "titulo") String titulo
     ) {
         return livrariaService.listarLivro(titulo);
@@ -71,7 +76,7 @@ public class LivrariaController {
         return livrariaService.atualizar(id, novoLivroDTO);
     }
 
-    @PatchMapping("/preco/{id}")
+    @PatchMapping("/updatePreco/{id}")
     @ResponseBody
     public LivroDTO updatePreco(
             @PathVariable Integer id,

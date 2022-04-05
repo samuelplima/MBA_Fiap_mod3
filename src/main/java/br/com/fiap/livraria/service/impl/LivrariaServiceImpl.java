@@ -21,6 +21,16 @@ public class LivrariaServiceImpl implements LivrariaService {
     }
 
     @Override
+    public List<LivroDTO> listarTodos() {
+        List<Livro> LivroList;
+        LivroList = livroRepository.findAll();
+        return LivroList
+                .stream()
+                .map(livro -> getLivroDTOListar(livro))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<LivroDTO> listarLivro(String titulo) {
         List<Livro> LivroList;
         if(titulo == null){
@@ -30,44 +40,35 @@ public class LivrariaServiceImpl implements LivrariaService {
         }
         return  LivroList
                 .stream()
-                .map(livro -> new LivroDTO(livro))
+                .map(livro -> getLivroDTOListar(livro))
                 .collect(Collectors.toList());
     }
 
     @Override
     public LivroDTO buscarLivroPorId(Integer id) {
         Livro livro = livroRepository.getById(id);
-        return new LivroDTO(livro);
+        return getLivroDTOId(livro);
     }
+
 
     @Override
     public LivroDTO criar(CreateUpdateLivroDTO createUpdateLivroDTO) {
         Livro livro = new Livro(createUpdateLivroDTO);
-        livro.setTitulo(createUpdateLivroDTO.getTitulo());
-        livro.setAutor(createUpdateLivroDTO.getAutor());
-        livro.setIsbn(createUpdateLivroDTO.getIsbn());
-        livro.setPreco(createUpdateLivroDTO.getPreco());
-        Livro savedLivro = livroRepository.save(livro);
-        return new LivroDTO(savedLivro);
+        return getLivroDTO(createUpdateLivroDTO, livro);
     }
 
     @Override
     public LivroDTO atualizar(Integer id, CreateUpdateLivroDTO createUpdateLivroDTO) {
         Livro livro = livroRepository.getById(id);
-        livro.setTitulo(createUpdateLivroDTO.getTitulo());
-        livro.setAutor(createUpdateLivroDTO.getAutor());
-        livro.setIsbn(createUpdateLivroDTO.getIsbn());
-        livro.setPreco(createUpdateLivroDTO.getPreco());
-        Livro savedLivro = livroRepository.save(livro);
-        return new LivroDTO(savedLivro);
+        return getLivroDTO(createUpdateLivroDTO, livro);
     }
 
     @Override
     public LivroDTO atualizarPreco(Integer id, UpdatePrecoLivroDTO updatePrecoLivroDTO) {
         Livro livro = livroRepository.getById(id);
         livro.setPreco(updatePrecoLivroDTO.getPreco());
-        Livro savedLivro = livroRepository.save(livro);
-        return new LivroDTO(savedLivro);
+        livroRepository.save(livro);
+        return getLivroDTOpreco(livro);
     }
 
     @Override
@@ -75,4 +76,26 @@ public class LivrariaServiceImpl implements LivrariaService {
         Livro livro = livroRepository.getById(id);
         livroRepository.delete(livro);
     }
+
+    private LivroDTO getLivroDTO(CreateUpdateLivroDTO createUpdateLivroDTO, Livro livro) {
+        livro.setTitulo(createUpdateLivroDTO.getTitulo());
+        livro.setAutor(createUpdateLivroDTO.getAutor());
+        livro.setIsbn(createUpdateLivroDTO.getIsbn());
+        livro.setPreco(createUpdateLivroDTO.getPreco());
+        livroRepository.save(livro);
+        return new LivroDTO(livro.getId(),livro.getIsbn(), livro.getAutor(), livro.getTitulo(), livro.getPreco());
+    }
+
+    private LivroDTO getLivroDTOId(Livro livro) {
+        return new LivroDTO(livro.getId(), livro.getIsbn(), livro.getAutor(), livro.getTitulo(), livro.getPreco());
+    }
+
+    private LivroDTO getLivroDTOpreco(Livro livro) {
+        return new LivroDTO(livro.getId(), livro.getIsbn(), livro.getAutor(), livro.getTitulo(), livro.getPreco());
+    }
+
+    private LivroDTO getLivroDTOListar(Livro livro) {
+        return new LivroDTO(livro.getId(), livro.getIsbn(), livro.getAutor(), livro.getTitulo(), livro.getPreco());
+    }
+
 }
