@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -55,7 +57,12 @@ public class LivrariaController {
     public LivroDTO getLivroById(
             @PathVariable Integer id
     ) {
-        return livrariaService.buscarLivroPorId(id);
+        try {
+            return livrariaService.buscarLivroPorId(id);
+        } catch (EntityNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ID Not Found", ex);
+        }
     }
 
     @PostMapping("/create")
@@ -73,7 +80,12 @@ public class LivrariaController {
             @PathVariable Integer id,
             @RequestBody CreateUpdateLivroDTO novoLivroDTO
     ) {
-        return livrariaService.atualizar(id, novoLivroDTO);
+        try {
+            return livrariaService.atualizar(id, novoLivroDTO);
+        } catch (EntityNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ID Not Found", ex);
+        }
     }
 
     @PatchMapping("/updatePreco/{id}")
@@ -82,15 +94,23 @@ public class LivrariaController {
             @PathVariable Integer id,
             @RequestBody UpdatePrecoLivroDTO updatePrecoLivroDTO
     ) {
-        return livrariaService.atualizarPreco(id, updatePrecoLivroDTO);
+        try {
+            return livrariaService.atualizarPreco(id, updatePrecoLivroDTO);
+        } catch (EntityNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ID Not Found", ex);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteLivro(
             @PathVariable Integer id
     ) {
-        livrariaService.deletarLivro(id);
+        try {
+            livrariaService.deletarLivro(id);
+        } catch (EntityNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ID Not Found", ex);
+        }
     }
-
-
 }
