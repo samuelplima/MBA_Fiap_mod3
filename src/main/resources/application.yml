@@ -1,0 +1,14 @@
+file:
+  path: ~/Documents/Fiap/MBA_Fiap_mod3/livrariabatch/teste
+  chunk: livros_vendidos.csv
+
+spring:
+  datasource:
+    url: jdbc:h2:~/Documents/Fiap/MBA_Fiap_mod3/Database;DB_CLOSE_ON_EXIT=FALSE
+    username: fiap
+    password: fiap
+    driverClassName: org.h2.Driver
+  jpa:
+        spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  batch:
+    initialize-schema: always
