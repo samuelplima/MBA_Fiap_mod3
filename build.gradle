@@ -23,15 +23,22 @@ dependencies {
 
     implementation 'mysql:mysql-connector-java:8.0.28'
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
+
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     compileOnly 'io.springfox:springfox-swagger2:2.9.2'
+
     compileOnly 'io.springfox:springfox-swagger-ui:2.9.2'
 
 }

@@ -1,4 +1,4 @@
-package br.com.fiap.livraria.dto;
+package br.com.fiap.livraria.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

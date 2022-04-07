@@ -1,8 +1,8 @@
 package br.com.fiap.livraria.controller;
 
-import br.com.fiap.livraria.dto.CreateUpdateLivroDTO;
-import br.com.fiap.livraria.dto.LivroDTO;
-import br.com.fiap.livraria.dto.UpdatePrecoLivroDTO;
+import br.com.fiap.livraria.model.dto.CreateUpdateLivroDTO;
+import br.com.fiap.livraria.model.dto.LivroDTO;
+import br.com.fiap.livraria.model.dto.UpdatePrecoLivroDTO;
 import br.com.fiap.livraria.service.LivrariaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

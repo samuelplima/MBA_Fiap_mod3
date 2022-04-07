@@ -5,6 +5,10 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    basic:
+      enabled: false
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,3 +25,8 @@ spring:
 server:
   error:
       include-message: always
+
+jwt:
+  secret: f1aPs3cr37
+  expire: 5
+

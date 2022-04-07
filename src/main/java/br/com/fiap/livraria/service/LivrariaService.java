@@ -1,8 +1,8 @@
 package br.com.fiap.livraria.service;
 
-import br.com.fiap.livraria.dto.CreateUpdateLivroDTO;
-import br.com.fiap.livraria.dto.LivroDTO;
-import br.com.fiap.livraria.dto.UpdatePrecoLivroDTO;
+import br.com.fiap.livraria.model.dto.CreateUpdateLivroDTO;
+import br.com.fiap.livraria.model.dto.LivroDTO;
+import br.com.fiap.livraria.model.dto.UpdatePrecoLivroDTO;
 
 import java.util.List;
 
