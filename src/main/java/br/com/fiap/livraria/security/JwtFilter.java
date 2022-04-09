@@ -1,9 +1,10 @@
 package br.com.fiap.livraria.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,39 +22,32 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUserDetailService jwtUserDetailService;
     private final JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
     public JwtFilter(JwtUserDetailService jwtUserDetailService,
                      JwtTokenUtil jwtTokenUtil) {
         this.jwtUserDetailService = jwtUserDetailService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-        final String authorizationHeaderToken = request.getHeader("Authorization");
-        String username = null;
-        if (authorizationHeaderToken != null) {
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(authorizationHeaderToken);
-            } catch (IllegalArgumentException illegal) {
-                logger.info(illegal.getMessage());
-            } catch (ExpiredJwtException expired) {
-                logger.info(expired.getMessage());
+
+        String authToken = request.getHeader("Authorization");
+        String userName = jwtTokenUtil.getUsernameFromToken(authToken);
+
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.jwtUserDetailService.loadUserByUsername(userName);
+            if (jwtTokenUtil.getUsernameFromToken(userName) == userName) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                logger.info("authenticated user" + userName + ", setting security context");
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-        }
-        if (username != null) {
-            UserDetails userDetails = jwtUserDetailService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
-                    null,
-                    userDetails.getAuthorities());// Role
-            authenticationToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request)
-            );
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        } else {
-            logger.warn("Token null ou fora do padrao Bearer");
         }
         filterChain.doFilter(request, response);
     }

@@ -1,6 +1,5 @@
 package br.com.fiap.livraria.config;
 
-import br.com.fiap.livraria.config.properties.WebProperties;
 import br.com.fiap.livraria.security.JwtAuthenticationEntrypoint;
 import br.com.fiap.livraria.security.JwtFilter;
 import br.com.fiap.livraria.security.JwtUserDetailService;
@@ -22,6 +21,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+
+
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -47,8 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManager()
-            throws Exception {
+    public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 
@@ -75,7 +75,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .formLogin().disable();
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
 
     @Override
     public void configure(WebSecurity web) {
@@ -86,11 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedHeader("authorization");
+        configuration.addAllowedHeader("Authorization");
         configuration.addAllowedHeader("content-type");
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "OPTIONS", "DELETE", "HEAD", "PATCH"));
         configuration.addExposedHeader("Access-Control-Allow-Headers");
         configuration.addExposedHeader("token");
+        configuration.addExposedHeader("Authorization");
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

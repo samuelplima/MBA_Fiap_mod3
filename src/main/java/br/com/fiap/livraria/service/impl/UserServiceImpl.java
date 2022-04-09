@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setUsername(savedUser.getUsername());
         return userDTO;
     }
+
     @Override
     public JwtDTO login(AuthDTO authDTO) {
         try{

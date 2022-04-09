@@ -27,19 +27,23 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'io.springfox:springfox-swagger2:2.9.2'
+
+    compileOnly 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    compileOnly "org.springframework.security:spring-security-web"
+
+    compileOnly "org.springframework.security:spring-security-config"
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-
-    compileOnly 'io.springfox:springfox-swagger2:2.9.2'
-
-    compileOnly 'io.springfox:springfox-swagger-ui:2.9.2'
 
 }
 
