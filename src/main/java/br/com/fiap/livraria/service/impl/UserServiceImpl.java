@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,16 +28,19 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
+    private HttpServletResponse httpServletResponse;
 
     @Autowired
     public UserServiceImpl(JwtTokenUtil jwtTokenUtil,
                            AuthenticationManager authenticationManager,
                            PasswordEncoder passwordEncoder,
-                           UserRepository userRepository){
+                           UserRepository userRepository,
+                           HttpServletResponse httpServletResponse){
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.httpServletResponse = httpServletResponse;
     }
 
     @Override
@@ -50,9 +57,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JwtDTO login(AuthDTO authDTO) {
+        Authentication authenticate;
         try{
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authDTO.getUsername(), authDTO.getPassword())
+                  authenticate = new UsernamePasswordAuthenticationToken(authDTO.getUsername(), authDTO.getPassword())
             );
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -60,6 +68,8 @@ public class UserServiceImpl implements UserService {
         String token = jwtTokenUtil.generateToken(authDTO.getUsername());
         JwtDTO jwtDTO = new JwtDTO();
         jwtDTO.setToken(token);
+        httpServletResponse.setHeader("Authorization", token);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
         return jwtDTO;
     }
 

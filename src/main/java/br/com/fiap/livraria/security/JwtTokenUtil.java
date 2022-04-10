@@ -26,17 +26,6 @@ public class JwtTokenUtil {
     @Value("${jwt.expire}")
     private int expire;
 
-    public Date getExpirationDateFromToken(String token){
-        Date expiration;
-        try{
-            final Claims claims = getClaimsFromtoken(token);
-            expiration = claims.getExpiration();
-        } catch (Exception e){
-            expiration = null;
-        }
-        return expiration;
-    }
-
     public String generateToken(String userName){
         Map<String, Object> claims = new HashMap<>();
 
@@ -80,36 +69,6 @@ public class JwtTokenUtil {
             claims = null;
         }
         return claims;
-    }
-
-    public Boolean canTokenCanBeRefreshed(String token){
-        return (!isTokenExpired(token));
-    }
-
-    private boolean isTokenExpired(String token){
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try{
-            final Claims claims = getClaimsFromtoken(token);
-            claims.put(CLAIM_KEY_CREATED, new Date());
-            refreshedToken = doGenerateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
-    }
-
-    public Boolean validateToken(String token, UserDetails userDetails){
-        User user = (User) userDetails;
-        final String userName = getUsernameFromToken(token);
-        return(
-                userName.equals(user.getUsername())
-                && !isTokenExpired(token)
-                );
     }
 
 }
