@@ -28,5 +28,5 @@ server:
 
 jwt:
   secret: f1aPs3cr37
-  expire: 5
+  expire: 5000
 
